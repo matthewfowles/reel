@@ -2,9 +2,9 @@
   "name": "reel",
   "version": "0.0.1",
   "description": "A lightweight Javascript library for animating elements on scroll",
-  "main": "index.js",
+  "main": "index.min.js",
   "scripts": {
-    "test": "npm run test"
+    "build": "uglifyjs index.js -m -c -o index.min.js"
   },
   "repository": {
     "type": "git",

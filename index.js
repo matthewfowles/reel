@@ -13,8 +13,8 @@ var reel = function() {
     'use strict'; // set up srict mode
 
 
-    reel.scrollers = []; // the array all animated elements will stored in with animation info.
-    reel.scroll = 0; // Current scroll point of the page
+    var scrollers = [], // the array all animated elements will stored in with animation info.
+        scroll = 0; // Current scroll point of the page
 
 
     /* 
@@ -28,14 +28,14 @@ var reel = function() {
     Thanks to @rikroots for pointing this out.
     */
 
-    reel.init = function() {
+    var init = function() {
 
-        reel.getScroll();
+        getScroll();
 
         function animate() {
             requestAnimationFrame(function() {
-                reel.getScroll();
-                reel.update();
+                getScroll();
+                update();
                 animate();
             });
         }
@@ -46,21 +46,44 @@ var reel = function() {
 
 
     /* 
+    ## remove property **object**
+    Object function to update individual properties.
+    */
+
+    var properties = {
+        opacity: {
+            property: 'opacity',
+            update: function(element, value) {
+                element.style.opacity = value;
+            }
+        },
+        rotate: {
+            property: 'transform',
+            update: function(element, value) {
+                var re = /rotate\([-\d\d]+deg\)/g;
+                element.style.transform = 'rotate(' + value + 'deg)';
+                element.style.webkitTransform = 'rotate(' + value + 'deg)';
+            }
+        }
+    };
+
+
+    /* 
     ## getScroll **function**
     	Get the current vertical scroll coords of the document.
         Polyfill if there is no widow y axis offset.
     */
 
-    reel.getScroll = function() {
+    var getScroll = function() {
 
         if (w.pageYOffset !== undefined) {
-            reel.scroll = pageYOffset;
+            scroll = window.pageYOffset;
         } else {
             var sy,
-                r = d.documentElement,
-                b = d.body;
+                r = document.documentElement,
+                b = document.body;
             sy = r.scrollTop || b.scrollTop || 0;
-            reel.scroll = sy;
+            scroll = sy;
         }
     };
 
@@ -72,10 +95,10 @@ var reel = function() {
     */
 
 
-    reel.update = function() {
-        if (reel.scrollers.length > 0) {
-            for (var i = reel.scrollers.length - 1; i >= 0; i--) {
-                reel.calculate(reel.scrollers[i]);
+    var update = function() {
+        if (scrollers.length > 0) {
+            for (var i = scrollers.length - 1; i >= 0; i--) {
+                calculate(scrollers[i]);
             }
         } else {
             return;
@@ -87,7 +110,7 @@ var reel = function() {
     ## calculate **function**
     */
 
-    reel.calculate = function(scroller) {
+    var calculate = function(scroller) {
 
         var scrollDiff = scroller.fromPos - scroller.toPos,
             scrollAmount = reel.scroll - scroller.fromPos,
@@ -99,11 +122,11 @@ var reel = function() {
         if (animateTo === scroller.toStyle || animateTo === scroller.fromStyle) {
             return;
         } else if (animateTo > scroller.toStyle) {
-            reel.animate(scroller.element, scroller.type, animateFrom, scroller.toStyle);
+            animate(scroller.element, scroller.type, animateFrom, scroller.toStyle);
         } else if (animateTo < scroller.fromStyle) {
-            reel.animate(scroller.element, scroller.type, animateFrom, scroller.fromStyle);
+            animate(scroller.element, scroller.type, animateFrom, scroller.fromStyle);
         } else {
-            reel.animate(scroller.element, scroller.type, animateFrom, animateTo);
+            animate(scroller.element, scroller.type, animateFrom, animateTo);
         }
     };
 
@@ -113,9 +136,8 @@ var reel = function() {
     pass the 
     */
 
-    reel.animate = function(element, property, from, to) {
-
-        reel.property[property].update(element, to);
+    var animate = function(element, property, from, to) {
+        properties[property].update(element, to);
     };
 
 
@@ -126,9 +148,9 @@ var reel = function() {
     */
 
 
-    reel.addReel = function(name, element, fromPos, toPos, type, fromStyle, toStyle) {
+    var addReel = function(name, element, fromPos, toPos, type, fromStyle, toStyle) {
 
-        reel.scrollers.push({
+        scrollers.push({
             name: name,
             element: element,
             fromPos: fromPos,
@@ -147,31 +169,8 @@ var reel = function() {
         Using the name you bound them to at the start. 
     */
 
-    reel.removeReel = function(name) {
+    var removeReel = function(name) {
 
-    };
-
-
-    /* 
-    ## remove property **object**
-    Object function to update individual properties.
-    */
-
-    reel.property = {
-        opacity: {
-            property: 'opacity',
-            update: function(element, value) {
-                element.style.opacity = value;
-            }
-        },
-        rotate: {
-            property: 'transform',
-            update: function(element, value) {
-                var re = /rotate\([-\d\d]+deg\)/g;
-                element.style.transform = 'rotate(' + value + 'deg)';
-                element.style.webkitTransform = 'rotate(' + value + 'deg)';
-            }
-        }
     };
 
 
@@ -211,4 +210,4 @@ var reel = function() {
 
 };
 
-module.exports = reel;
+module && module.exprots ? module.exports = reel : window.reel = reel;
