@@ -1,0 +1,23 @@
+{
+  "name": "reel",
+  "version": "0.0.1",
+  "description": "A lightweight Javascript library for animating elements on scroll",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewfowles/reel.git"
+  },
+  "keywords": [
+    "Javascript",
+    "scroll"
+  ],
+  "author": "Matthew Fowles",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/matthewfowles/reel/issues"
+  },
+  "homepage": "https://github.com/matthewfowles/reel#readme"
+}
