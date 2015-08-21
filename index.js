@@ -7,10 +7,9 @@ liscense: MIT
 Author: Matthew Fowles
 */
 
+'use strict'; // set up srict mode
 
 var reel = function() {
-
-    'use strict'; // set up srict mode
 
 
     var scrollers = [], // the array all animated elements will stored in with animation info.
@@ -60,7 +59,6 @@ var reel = function() {
         rotate: {
             property: 'transform',
             update: function(element, value) {
-                var re = /rotate\([-\d\d]+deg\)/g;
                 element.style.transform = 'rotate(' + value + 'deg)';
                 element.style.webkitTransform = 'rotate(' + value + 'deg)';
             }
@@ -76,7 +74,7 @@ var reel = function() {
 
     var getScroll = function() {
 
-        if (w.pageYOffset !== undefined) {
+        if (window.pageYOffset !== undefined) {
             scroll = window.pageYOffset;
         } else {
             var sy,
@@ -188,7 +186,7 @@ var reel = function() {
         }
 
         if (!window.requestAnimationFrame)
-            window.requestAnimationFrame = function(callback, element) {
+            window.requestAnimationFrame = function(callback) {
                 var currTime = new Date().getTime();
                 var timeToCall = Math.max(0, 16 - (currTime - lastTime));
                 var id = window.setTimeout(function() {
@@ -205,9 +203,15 @@ var reel = function() {
             };
     }());
 
+    init();
+
+    return {
+        add: addReel,
+        remove: removeReel 
+    }
 
 
 
 };
 
-module && module.exprots ? module.exports = reel : window.reel = reel;
+(module && module.exports) ? module.exports = reel : window.reel = reel;
