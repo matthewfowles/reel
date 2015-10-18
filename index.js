@@ -16,13 +16,13 @@ var reel = function() {
         scroll = 0; // Current scroll point of the page
 
 
-    /* 
+    /*
     ## init **function**
-	
-	Start request animation frame and run get 
+
+	Start request animation frame and run get
     scroll to update current scroll position.
     Then run update to update elements.
-    Animation runs recursivly throughout. this is better 
+    Animation runs recursivly throughout. this is better
     than binding to the window on scroll event.
     Thanks to @rikroots for pointing this out.
     */
@@ -44,9 +44,9 @@ var reel = function() {
     };
 
 
-    /* 
-    ## remove property **object**
-    Object function to update individual properties.
+    /*
+    ## properties **object**
+    Object function to update individual properties. Only built in properties.
     */
 
     var properties = {
@@ -66,7 +66,22 @@ var reel = function() {
     };
 
 
-    /* 
+    /*
+    ## addProperty **function**
+    	Add to the built in properties.
+    */
+
+
+    var addProperty = function(property) {
+
+      if(property.update && property.property) {
+        reel.properties[property.property] = property;
+      };
+
+    };
+
+
+    /*
     ## getScroll **function**
     	Get the current vertical scroll coords of the document.
         Polyfill if there is no widow y axis offset.
@@ -86,7 +101,7 @@ var reel = function() {
     };
 
 
-    /* 
+    /*
     ## update **function**
 	check if we have any scrollers currently if so pass each
 	one individually to the calculate fuction;
@@ -104,7 +119,7 @@ var reel = function() {
     };
 
 
-    /* 
+    /*
     ## calculate **function**
     */
 
@@ -129,19 +144,21 @@ var reel = function() {
     };
 
 
-    /* 
+    /*
     ## animate **function**
-    pass the 
+    pass the
     */
 
     var animate = function(element, property, from, to) {
-        properties[property].update(element, to);
+        if(properties[property]) {
+            properties[property].update(element, to);
+        }
     };
 
 
-    /* 
+    /*
     ## addReel **function**
-    Add a new reel to the list of reels already being updated. 
+    Add a new reel to the list of reels already being updated.
     The reels are individual property updates on elements.
     */
 
@@ -161,18 +178,22 @@ var reel = function() {
     };
 
 
-    /* 
+    /*
     ## removeReel **function**
         Use this function to remove reels from the update cycle.
-        Using the name you bound them to at the start. 
+        Using the name you bound them to at the start.
     */
 
     var removeReel = function(name) {
-
+        scrollers.forEach(function(scroller, index){
+          if(scroller.name === name) {
+            scrollers.splice(index, 1);
+          }
+        });
     };
 
 
-    /* 
+    /*
     ## Request animation polyfill
         Use this to get all vendor prefixes and fallbacks sorted.
     */
@@ -207,7 +228,8 @@ var reel = function() {
 
     return {
         add: addReel,
-        remove: removeReel 
+        remove: removeReel,
+        addProperty: addProperty
     }
 
 

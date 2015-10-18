@@ -12,12 +12,16 @@
   },
   "keywords": [
     "Javascript",
-    "scroll"
+    "scroll",
+    "reel"
   ],
   "author": "Matthew Fowles",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/matthewfowles/reel/issues"
   },
-  "homepage": "https://github.com/matthewfowles/reel#readme"
+  "homepage": "https://github.com/matthewfowles/reel#readme",
+  "devDependencies": {
+    "uglifyjs": "^2.4.10"
+  }
 }
