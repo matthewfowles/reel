@@ -1,6 +1,6 @@
 {
   "name": "reel-js",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A lightweight Javascript library for animating elements on scroll",
   "main": "index.min.js",
   "scripts": {
